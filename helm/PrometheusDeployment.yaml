@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prometheus
+  labels:
+    name: prometheus
+spec:
+  replicas: 1
+  selector:
+      matchLabels:
+        app: prometheus
+  template:
+    metadata:
+      labels:
+        app: prometheus
+    spec:
+      containers:
+      - name: prometheus
+        image: prom/prometheus
+        args:
+         - --web.external-url=http://prometheus:9090/prometheus
+         - --web.route-prefix=/
+         - --config.file=/etc/prometheus/prometheus.yml
+        volumeMounts:
+        - name: prometheus-yml
+          mountPath: /etc/prometheus/prometheus.yml
+          subPath: prometheus.yml
+        ports:
+        - name:  prometheus
+          containerPort: 9090
+          protocol: TCP
+      volumes:
+      - name: prometheus-yml
+        configMap:
+          name: prometheusconfigmap
+          items:
+            - key: prometheus.yml
+              path: prometheus.yml

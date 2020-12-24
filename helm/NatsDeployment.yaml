@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  nats
+spec:
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: nats
+  template:
+    metadata:
+      labels:
+        app:  nats
+    spec:
+      containers:
+      - image:  nats
+        name:  nats
+        command:
+          - "/nats-server"
+          - "--config"
+          - "nats-server.conf"
+          - "-p"
+          - "4222"
+        resources:
+          requests:
+            cpu: "20m"
+            memory: "55M"
+        ports:
+        - containerPort:  4222
+          name:  natsport

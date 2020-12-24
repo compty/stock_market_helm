@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grafana
+spec:
+  replicas: 1
+  selector:
+      matchLabels:
+        app: grafana
+  template:
+    metadata:
+      labels:
+        app: grafana
+    spec:
+      containers:
+      - name: grafana
+        image: grafana/grafana
+        volumeMounts:
+        - name: grafana-ini
+          mountPath: /etc/grafana/grafana.ini
+          subPath: grafana.ini
+        - name: prometheus-datasource
+          mountPath: /etc/grafana/provisioning/datasources/prometheus-datasource.yml
+          subPath: prometheus-datasource.yml
+        ports:
+        - name:  grafana
+          containerPort: 3000
+          protocol: TCP
+      volumes:
+      - name: grafana-ini
+        configMap:
+          name: grafanaconfigmap
+          items:
+            - key: grafana.ini
+              path: grafana.ini
+      - name: prometheus-datasource
+        configMap:
+          name: grafanaconfigmap
+          items:
+            - key: prometheus-datasource.yml
+              path: prometheus-datasource.yml

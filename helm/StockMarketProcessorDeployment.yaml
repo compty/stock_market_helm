@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  stock
+  labels:
+    name:  stock
+spec:
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  selector:
+      matchLabels:
+        app: stock
+  template:
+    metadata:
+      labels:
+        app:  stock
+    spec:
+      containers:
+      - image:  compty/stock_market_processor:latest
+        name:  stock-market-processor
+        ports:
+        - name: stock-proc-port
+          containerPort: 9090
+          protocol: TCP
+      - image: compty/stock_operation_listener:latest
+        name: stock-operation-listener
+        ports:
+        - name: stock-op-port
+          containerPort: 9091
+          protocol: TCP
+      imagePullSecrets:
+        - name: registry-secret

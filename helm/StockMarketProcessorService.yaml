@@ -1,0 +1,16 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name:  stock
+spec:
+  selector:
+    app: stock
+  ports:
+  - protocol: TCP
+    name:  stock-proc-port
+    port:  9090
+    targetPort: 9090
+  - protocol: TCP
+    name:  stock-op-port
+    port:  9091
+    targetPort: 9091

@@ -1,0 +1,12 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name:  nats
+spec:
+  selector:
+    app: nats
+  ports:
+  - protocol: TCP
+    name:  natsport
+    port:  4222
+    targetPort: 4222
