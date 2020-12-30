@@ -14,3 +14,18 @@ spec:
     name:  stock-op-port
     port:  9091
     targetPort: 9091
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name:  stock-gui-service
+spec:
+  selector:
+    app:  stock
+  type: NodePort
+  ports:
+  - protocol: TCP
+    name: stock-gui-port
+    port: 8080
+    targetPort: 8080
+    nodePort: 8080

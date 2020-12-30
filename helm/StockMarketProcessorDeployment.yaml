@@ -19,6 +19,11 @@ spec:
         app:  stock
     spec:
       containers:
+      - image : compty/stock_market_gui:latest
+        ports:
+        - name: stock-gui-port
+          containerPort: 8080
+          protocol: TCP
       - image:  compty/stock_market_processor:latest
         name:  stock-market-processor
         ports:
