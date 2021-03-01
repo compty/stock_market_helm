@@ -18,5 +18,17 @@ data:
         location /grafana/ {
             proxy_pass  http://grafana:3000/;
         }
+        location /deleteStock {
+            proxy_pass http://stock:81/deleteStock;
+        }
+        location /existingStocks {
+            proxy_pass http://stock:81/existingStocks;
+        }
+        location /submitStock {
+            proxy_pass http://stock:81/submitStock;
+        }
+        location /stock/ {
+            proxy_pass http://stock:80/;
+        }
       }
     }
